@@ -5,6 +5,8 @@ import RunTestButton from '../components/RunTestButton'
 import MetricsCards from '../components/MetricsCards'
 import History from '../components/History'
 import TopMetrics from '../components/TopMetrics'
+import Card from '../components/Card'
+import ProgressIndicator from '../components/ProgressIndicator'
 import dynamic from 'next/dynamic'
 import ResultsTable from '../components/ResultsTable'
 
@@ -17,15 +19,18 @@ export default function Page() {
       <TopMetrics />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 card">
-          <h2 className="text-lg font-semibold mb-2">Endpoint</h2>
-          <ApiInput />
-          <div className="mt-4">
-            <RequestConfig />
-            <div className="mt-4 flex items-center justify-between">
-              <RunTestButton />
+        <div className="lg:col-span-2">
+          <Card>
+            <h2 className="text-lg font-semibold mb-2">Endpoint</h2>
+            <ApiInput />
+            <div className="mt-4">
+              <RequestConfig />
+              <div className="mt-4 flex items-center justify-between">
+                <RunTestButton />
+              </div>
+              <ProgressIndicator />
             </div>
-          </div>
+          </Card>
         </div>
 
         <div className="card">
