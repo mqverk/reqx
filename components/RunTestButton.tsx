@@ -1,14 +1,14 @@
 'use client'
 import React from 'react'
 import { useBenchmarkStore } from '../stores/benchmarkStore'
-import { motion } from 'framer-motion'
+import { motion, HTMLMotionProps } from 'framer-motion'
 
 export default function RunTestButton() {
   const startBenchmark = useBenchmarkStore((s) => s.startBenchmark)
   const running = useBenchmarkStore((s) => s.running)
 
   const MotionButton = motion.button as unknown as React.ComponentType<
-    React.ButtonHTMLAttributes<HTMLButtonElement>
+    HTMLMotionProps<'button'>
   >
 
   return (
