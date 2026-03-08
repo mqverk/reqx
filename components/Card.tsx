@@ -2,7 +2,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
-export default function Card({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+export default function Card({ children, className = '', ...rest }: { children: React.ReactNode; className?: string; [key: string]: any }) {
   const MotionDiv: any = motion.div
 
   return (
@@ -11,6 +11,7 @@ export default function Card({ children, className = '' }: { children: React.Rea
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.28 }}
       className={`card ${className}`}
+      {...rest}
     >
       {children}
     </MotionDiv>
