@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import { useBenchmarkStore } from '../stores/benchmarkStore'
+import { FileText, Code, Hash, Shuffle } from 'lucide-react'
 
 export default function RequestConfig() {
   const config = useBenchmarkStore((s) => s.config)
@@ -21,7 +22,7 @@ export default function RequestConfig() {
         </select>
 
         <div className="flex-1">
-          <label className="block text-xs text-slate-400">Headers (JSON)</label>
+          <label className="block text-xs text-slate-400 flex items-center gap-2"><FileText size={14} className="text-slate-400"/> <span>Headers (JSON)</span></label>
           <textarea
             value={config.headers}
             onChange={(e) => setConfig({ headers: e.target.value })}
@@ -32,7 +33,7 @@ export default function RequestConfig() {
       </div>
 
       <div>
-        <label className="block text-xs text-slate-400">Body (optional)</label>
+        <label className="block text-xs text-slate-400 flex items-center gap-2"><Code size={14} className="text-slate-400"/> <span>Body (optional)</span></label>
         <textarea
           value={config.body}
           onChange={(e) => setConfig({ body: e.target.value })}
@@ -43,7 +44,7 @@ export default function RequestConfig() {
 
       <div className="flex gap-4 items-center">
         <div className="flex items-center gap-2">
-          <label className="text-xs text-slate-400">Count</label>
+          <label className="text-xs text-slate-400 flex items-center gap-2"><Hash size={14} className="text-slate-400"/> <span>Count</span></label>
           <input
             type="number"
             min={1}
@@ -55,7 +56,7 @@ export default function RequestConfig() {
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-xs text-slate-400">Mode</label>
+          <label className="text-xs text-slate-400 flex items-center gap-2"><Shuffle size={14} className="text-slate-400"/> <span>Mode</span></label>
           <select
             value={config.concurrent ? 'concurrent' : 'sequential'}
             onChange={(e) => setConfig({ concurrent: e.target.value === 'concurrent' })}
