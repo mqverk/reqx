@@ -1,4 +1,4 @@
-'use client'
+ 'use client'
 import React from 'react'
 import { useBenchmarkStore } from '../stores/benchmarkStore'
 import { FileText, Code, Hash, Shuffle } from 'lucide-react'
@@ -13,7 +13,7 @@ export default function RequestConfig() {
         <select
           value={config.method}
           onChange={(e) => setConfig({ method: e.target.value })}
-          className="rounded-md bg-transparent border border-white/6 p-2"
+          className="rounded-md bg-transparent border border-white/6 p-2 transition-shadow duration-150 focus:ring-1 focus:ring-indigo-500/30"
         >
           <option>GET</option>
           <option>POST</option>
@@ -26,7 +26,7 @@ export default function RequestConfig() {
           <textarea
             value={config.headers}
             onChange={(e) => setConfig({ headers: e.target.value })}
-            className="w-full rounded-md bg-transparent border border-white/6 p-2 mt-1 text-xs h-16"
+            className="w-full rounded-md bg-transparent border border-white/6 p-2 mt-1 text-xs h-16 input-mono transition-shadow duration-150 focus:ring-1 focus:ring-indigo-500/30"
             placeholder='{"Authorization":"Bearer ..."}'
           />
         </div>
@@ -37,7 +37,7 @@ export default function RequestConfig() {
         <textarea
           value={config.body}
           onChange={(e) => setConfig({ body: e.target.value })}
-          className="w-full rounded-md bg-transparent border border-white/6 p-2 mt-1 text-xs h-24"
+          className="w-full rounded-md bg-transparent border border-white/6 p-2 mt-1 text-xs h-24 input-mono transition-shadow duration-150 focus:ring-1 focus:ring-indigo-500/30"
           placeholder='{"key":"value"}'
         />
       </div>
@@ -51,7 +51,7 @@ export default function RequestConfig() {
             max={100}
             value={config.count}
             onChange={(e) => setConfig({ count: Number(e.target.value) })}
-            className="w-20 rounded-md bg-transparent border border-white/6 p-2"
+            className="w-20 rounded-md bg-transparent border border-white/6 p-2 input-mono transition-shadow duration-150 focus:ring-1 focus:ring-indigo-500/30"
           />
         </div>
 
