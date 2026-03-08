@@ -2,6 +2,8 @@
 import React from 'react'
 import { useBenchmarkStore } from '../stores/benchmarkStore'
 import { motion, HTMLMotionProps } from 'framer-motion'
+import { Play } from 'lucide-react'
+import Spinner from './Spinner'
 
 export default function RunTestButton() {
   const startBenchmark = useBenchmarkStore((s) => s.startBenchmark)
@@ -16,9 +18,12 @@ export default function RunTestButton() {
         onClick={() => {
           void startBenchmark()
         }}
-        className={`px-4 py-2 rounded-lg font-medium ${running ? 'bg-gray-600' : 'bg-green-600 hover:bg-green-500'}`}
+        className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 ${running ? 'bg-gray-600' : 'bg-green-600 hover:bg-green-500'}`}
       >
-        {running ? 'Running…' : 'Run Test'}
+        <span className="inline-flex items-center gap-2">
+          {running ? <Spinner size={16} /> : <Play size={16} />}
+          <span>{running ? 'Running…' : 'Run Test'}</span>
+        </span>
       </MotionButton>
       {running && <div className="text-xs text-slate-400">Streaming results…</div>}
     </div>
