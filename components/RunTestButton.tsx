@@ -7,9 +7,7 @@ export default function RunTestButton() {
   const startBenchmark = useBenchmarkStore((s) => s.startBenchmark)
   const running = useBenchmarkStore((s) => s.running)
 
-  const MotionButton = motion.button as unknown as React.ComponentType<
-    HTMLMotionProps<'button'>
-  >
+  const MotionButton: any = motion.button
 
   return (
     <div className="flex items-center gap-3">
