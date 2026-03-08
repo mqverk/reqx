@@ -1,6 +1,8 @@
-'use client'
+ 'use client'
 import React from 'react'
 import { useBenchmarkStore } from '../stores/benchmarkStore'
+import { Search, Check } from 'lucide-react'
+import IconButton from './IconButton'
 
 export default function ApiInput() {
   const config = useBenchmarkStore((s) => s.config)
@@ -11,19 +13,24 @@ export default function ApiInput() {
 
   return (
     <div className="flex gap-2 items-center">
-      <input
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={() => setConfig({ url: value })}
-        placeholder="https://api.example.com/endpoint"
-        className="w-full rounded-lg p-3 bg-transparent border border-white/6 outline-none"
-      />
-      <button
+      <div className="relative w-full">
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+          <Search size={16} />
+        </div>
+        <input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={() => setConfig({ url: value })}
+          placeholder="https://api.example.com/endpoint"
+          className="w-full rounded-lg p-3 pl-10 bg-transparent border border-white/6 outline-none"
+        />
+      </div>
+      <IconButton
+        icon={Check}
+        label="Apply"
         onClick={() => setConfig({ url: value })}
-        className="px-3 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-500"
-      >
-        Set
-      </button>
+        className="bg-indigo-600 text-white hover:bg-indigo-500"
+      />
     </div>
   )
 }
