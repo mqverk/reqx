@@ -3,6 +3,7 @@ import React from 'react'
 import { useBenchmarkStore } from '../stores/benchmarkStore'
 import { Clock, Activity, Zap, ChevronDown, CheckCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
+const MotionDiv: any = motion.div
 
 function toFixed(n?: number) {
   return n == null || isNaN(n) ? '-' : n.toFixed(2)
@@ -31,7 +32,7 @@ export default function MetricsCards() {
 
   return (
     <div className="grid grid-cols-2 gap-3">
-      <motion.div whileHover={{ y: -4 }} className="p-3 rounded-md bg-white/2 flex items-center gap-3">
+      <MotionDiv whileHover={{ y: -4 }} className="p-3 rounded-md bg-white/2 flex items-center gap-3">
         <div className="p-2 rounded-md bg-white/5">
           <Clock size={18} />
         </div>
@@ -41,7 +42,7 @@ export default function MetricsCards() {
         </div>
       </motion.div>
 
-      <motion.div whileHover={{ y: -4 }} className="p-3 rounded-md bg-white/2 flex items-center gap-3">
+      <MotionDiv whileHover={{ y: -4 }} className="p-3 rounded-md bg-white/2 flex items-center gap-3">
         <div className="p-2 rounded-md bg-white/5">
           <Activity size={18} />
         </div>
@@ -51,7 +52,7 @@ export default function MetricsCards() {
         </div>
       </motion.div>
 
-      <motion.div whileHover={{ y: -4 }} className="p-3 rounded-md bg-white/2 flex items-center gap-3">
+      <MotionDiv whileHover={{ y: -4 }} className="p-3 rounded-md bg-white/2 flex items-center gap-3">
         <div className="p-2 rounded-md bg-white/5">
           <Zap size={18} />
         </div>
@@ -61,7 +62,7 @@ export default function MetricsCards() {
         </div>
       </motion.div>
 
-      <motion.div whileHover={{ y: -4 }} className="p-3 rounded-md bg-white/2 flex items-center gap-3">
+      <MotionDiv whileHover={{ y: -4 }} className="p-3 rounded-md bg-white/2 flex items-center gap-3">
         <div className="p-2 rounded-md bg-white/5">
           <ChevronDown size={18} />
         </div>
@@ -71,7 +72,7 @@ export default function MetricsCards() {
         </div>
       </motion.div>
 
-      <motion.div whileHover={{ y: -4 }} className="p-3 rounded-md bg-white/2 flex items-center gap-3">
+      <MotionDiv whileHover={{ y: -4 }} className="p-3 rounded-md bg-white/2 flex items-center gap-3">
         <div className="p-2 rounded-md bg-white/5">
           <CheckCircle size={18} />
         </div>
@@ -81,7 +82,7 @@ export default function MetricsCards() {
         </div>
       </motion.div>
 
-      <motion.div whileHover={{ y: -4 }} className="p-3 rounded-md bg-white/2 flex items-center gap-3">
+      <MotionDiv whileHover={{ y: -4 }} className="p-3 rounded-md bg-white/2 flex items-center gap-3">
         <div className="p-2 rounded-md bg-white/5">
           <Activity size={18} />
         </div>
