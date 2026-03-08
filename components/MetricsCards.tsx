@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import { useBenchmarkStore } from '../stores/benchmarkStore'
+import { Clock, Activity, Zap, ChevronDown, CheckCircle } from 'lucide-react'
 
 function toFixed(n?: number) {
   return n == null || isNaN(n) ? '-' : n.toFixed(2)
@@ -29,34 +30,64 @@ export default function MetricsCards() {
 
   return (
     <div className="grid grid-cols-2 gap-3">
-      <div className="p-3 rounded-md bg-white/2">
-        <div className="text-xs text-slate-400">Average</div>
-        <div className="text-xl font-semibold">{toFixed(stats?.avg)} ms</div>
+      <div className="p-3 rounded-md bg-white/2 flex items-center gap-3">
+        <div className="p-2 rounded-md bg-white/5">
+          <Clock size={18} />
+        </div>
+        <div>
+          <div className="text-xs text-slate-400">Average</div>
+          <div className="text-xl font-semibold">{toFixed(stats?.avg)} ms</div>
+        </div>
       </div>
 
-      <div className="p-3 rounded-md bg-white/2">
-        <div className="text-xs text-slate-400">p95</div>
-        <div className="text-xl font-semibold">{toFixed(stats?.p95)} ms</div>
+      <div className="p-3 rounded-md bg-white/2 flex items-center gap-3">
+        <div className="p-2 rounded-md bg-white/5">
+          <Activity size={18} />
+        </div>
+        <div>
+          <div className="text-xs text-slate-400">p95</div>
+          <div className="text-xl font-semibold">{toFixed(stats?.p95)} ms</div>
+        </div>
       </div>
 
-      <div className="p-3 rounded-md bg-white/2">
-        <div className="text-xs text-slate-400">Fastest</div>
-        <div className="text-xl font-semibold">{toFixed(stats?.fastest)} ms</div>
+      <div className="p-3 rounded-md bg-white/2 flex items-center gap-3">
+        <div className="p-2 rounded-md bg-white/5">
+          <Zap size={18} />
+        </div>
+        <div>
+          <div className="text-xs text-slate-400">Fastest</div>
+          <div className="text-xl font-semibold">{toFixed(stats?.fastest)} ms</div>
+        </div>
       </div>
 
-      <div className="p-3 rounded-md bg-white/2">
-        <div className="text-xs text-slate-400">Slowest</div>
-        <div className="text-xl font-semibold">{toFixed(stats?.slowest)} ms</div>
+      <div className="p-3 rounded-md bg-white/2 flex items-center gap-3">
+        <div className="p-2 rounded-md bg-white/5">
+          <ChevronDown size={18} />
+        </div>
+        <div>
+          <div className="text-xs text-slate-400">Slowest</div>
+          <div className="text-xl font-semibold">{toFixed(stats?.slowest)} ms</div>
+        </div>
       </div>
 
-      <div className="p-3 rounded-md bg-white/2">
-        <div className="text-xs text-slate-400">Success Rate</div>
-        <div className="text-xl font-semibold">{stats ? stats.successRate.toFixed(1) : '-'}%</div>
+      <div className="p-3 rounded-md bg-white/2 flex items-center gap-3">
+        <div className="p-2 rounded-md bg-white/5">
+          <CheckCircle size={18} />
+        </div>
+        <div>
+          <div className="text-xs text-slate-400">Success Rate</div>
+          <div className="text-xl font-semibold">{stats ? stats.successRate.toFixed(1) : '-'}%</div>
+        </div>
       </div>
 
-      <div className="p-3 rounded-md bg-white/2">
-        <div className="text-xs text-slate-400">Throughput</div>
-        <div className="text-xl font-semibold">{stats ? stats.throughput.toFixed(2) : '-'} req/s</div>
+      <div className="p-3 rounded-md bg-white/2 flex items-center gap-3">
+        <div className="p-2 rounded-md bg-white/5">
+          <Activity size={18} />
+        </div>
+        <div>
+          <div className="text-xs text-slate-400">Throughput</div>
+          <div className="text-xl font-semibold">{stats ? stats.throughput.toFixed(2) : '-'} req/s</div>
+        </div>
       </div>
     </div>
   )
