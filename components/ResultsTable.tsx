@@ -55,7 +55,7 @@ export default function ResultsTable() {
         <IconButton icon={FileText} title="Export CSV" onClick={exportCSV} className="bg-white/3 text-slate-100 hover:bg-white/5" />
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm">
+        <table className="w-full text-left text-sm zebra">
           <thead>
             <tr className="text-slate-400 border-b border-white/6">
               <th className="py-2 px-3">#</th>
@@ -68,7 +68,7 @@ export default function ResultsTable() {
           <tbody>
             {results.map((r) => (
               <tr key={r.index} className="border-b border-white/3">
-                <td className="py-2 px-3">{r.index + 1}</td>
+                <td className="py-2 px-3 input-mono">{r.index + 1}</td>
                 <td className="py-2 px-3 font-medium">
                   <div className="inline-flex items-center gap-2">
                     {r.status >= 200 && r.status < 300 ? (
@@ -83,8 +83,8 @@ export default function ResultsTable() {
                     </span>
                   </div>
                 </td>
-                <td className="py-2 px-3">{r.duration.toFixed(2)}</td>
-                <td className="py-2 px-3">{new Date(r.timestamp).toLocaleTimeString()}</td>
+                <td className="py-2 px-3 input-mono">{r.duration.toFixed(2)}</td>
+                <td className="py-2 px-3 input-mono">{new Date(r.timestamp).toLocaleTimeString()}</td>
                 <td className="py-2 px-3 text-xs text-rose-300">{r.error || '-'}</td>
               </tr>
             ))}
