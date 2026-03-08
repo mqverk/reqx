@@ -7,6 +7,7 @@ export default function ProgressBar({ progress = 0 }: { progress?: number }) {
   return (
     <div className="w-full bg-white/5 rounded-full h-2 overflow-hidden">
       <motion.div
+        as={"div"}
         initial={{ width: 0 }}
         animate={{ width: `${pct}%` }}
         transition={{ ease: 'easeOut', duration: 0.5 }}
