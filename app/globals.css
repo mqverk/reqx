@@ -26,8 +26,27 @@ body {
 }
 
 .card {
-  background: rgba(255,255,255,0.04);
-  backdrop-filter: blur(6px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  backdrop-filter: blur(8px) saturate(110%);
   border-radius: 1rem;
   padding: 1rem;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
 }
+
+.glass-muted {
+  background: rgba(255,255,255,0.02);
+  backdrop-filter: blur(6px);
+}
+
+.input-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Helvetica Neue", monospace;
+  letter-spacing: -0.01em;
+}
+
+.card-title {
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.zebra tr:nth-child(odd) { background-color: rgba(255,255,255,0.02); }
+.zebra tr:hover { background-color: rgba(255,255,255,0.04); }
