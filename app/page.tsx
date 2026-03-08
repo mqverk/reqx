@@ -4,6 +4,7 @@ import RequestConfig from '../components/RequestConfig'
 import RunTestButton from '../components/RunTestButton'
 import MetricsCards from '../components/MetricsCards'
 import History from '../components/History'
+import TopMetrics from '../components/TopMetrics'
 import dynamic from 'next/dynamic'
 import ResultsTable from '../components/ResultsTable'
 
@@ -13,6 +14,8 @@ const LatencyHistogram = dynamic(() => import('../components/LatencyHistogram'),
 export default function Page() {
   return (
     <div className="space-y-6">
+      <TopMetrics />
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 card">
           <h2 className="text-lg font-semibold mb-2">Endpoint</h2>
