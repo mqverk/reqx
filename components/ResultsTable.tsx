@@ -1,6 +1,8 @@
-'use client'
+ 'use client'
 import React from 'react'
 import { useBenchmarkStore } from '../stores/benchmarkStore'
+import IconButton from './IconButton'
+import { Copy, DownloadCloud, FileText, CheckCircle, AlertCircle, HelpCircle } from 'lucide-react'
 
 function toCSV(results: any[]) {
   const headers = ['index', 'duration_ms', 'status', 'ok', 'timestamp', 'error']
@@ -48,9 +50,9 @@ export default function ResultsTable() {
   return (
     <div>
       <div className="flex items-center justify-end gap-2 mb-3">
-        <button className="px-3 py-1 bg-white/3 rounded" onClick={copyToClipboard}>Copy</button>
-        <button className="px-3 py-1 bg-white/3 rounded" onClick={exportJSON}>Export JSON</button>
-        <button className="px-3 py-1 bg-white/3 rounded" onClick={exportCSV}>Export CSV</button>
+        <IconButton icon={Copy} title="Copy results" onClick={copyToClipboard} className="bg-white/3 text-slate-100 hover:bg-white/5" />
+        <IconButton icon={DownloadCloud} title="Export JSON" onClick={exportJSON} className="bg-white/3 text-slate-100 hover:bg-white/5" />
+        <IconButton icon={FileText} title="Export CSV" onClick={exportCSV} className="bg-white/3 text-slate-100 hover:bg-white/5" />
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm">
@@ -67,8 +69,19 @@ export default function ResultsTable() {
             {results.map((r) => (
               <tr key={r.index} className="border-b border-white/3">
                 <td className="py-2 px-3">{r.index + 1}</td>
-                <td className={`py-2 px-3 font-medium ${r.status >= 200 && r.status < 300 ? 'text-green-400' : r.status >= 400 ? 'text-red-400' : 'text-amber-400'}`}>
-                  {r.status || 'ERR'}
+                <td className="py-2 px-3 font-medium">
+                  <div className="inline-flex items-center gap-2">
+                    {r.status >= 200 && r.status < 300 ? (
+                      <CheckCircle size={16} className="text-green-400" />
+                    ) : r.status >= 400 ? (
+                      <AlertCircle size={16} className="text-red-400" />
+                    ) : (
+                      <HelpCircle size={16} className="text-amber-400" />
+                    )}
+                    <span className={`${r.status >= 200 && r.status < 300 ? 'text-green-400' : r.status >= 400 ? 'text-red-400' : 'text-amber-400'}`}>
+                      {r.status || 'ERR'}
+                    </span>
+                  </div>
                 </td>
                 <td className="py-2 px-3">{r.duration.toFixed(2)}</td>
                 <td className="py-2 px-3">{new Date(r.timestamp).toLocaleTimeString()}</td>
