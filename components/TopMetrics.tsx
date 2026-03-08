@@ -29,7 +29,7 @@ export default function TopMetrics() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <Card className="p-4">
+      <Card className="p-4" whileHover={{ y: -6 }} whileTap={{ scale: 0.995 }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-md bg-white/5">
@@ -44,7 +44,7 @@ export default function TopMetrics() {
         </div>
       </Card>
 
-      <Card className="p-4">
+      <Card className="p-4" whileHover={{ y: -6 }} whileTap={{ scale: 0.995 }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-md bg-white/5">
@@ -59,7 +59,7 @@ export default function TopMetrics() {
         </div>
       </Card>
 
-      <Card className="p-4">
+      <Card className="p-4" whileHover={{ y: -6 }} whileTap={{ scale: 0.995 }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-md bg-white/5">
