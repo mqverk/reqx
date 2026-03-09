@@ -8,6 +8,7 @@ import {
   ChevronUp,
   ArrowLeft,
   Keyboard,
+  Repeat,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast, Toaster } from "sonner";
@@ -31,6 +32,7 @@ export default function ToolPage() {
   const [body, setBody] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
+  const [requestCount, setRequestCount] = useState(1);
 
   const {
     sendRequest,
@@ -48,18 +50,23 @@ export default function ToolPage() {
       return;
     }
 
-    const result = await sendRequest(method, url, headers, body);
+    const count = Math.max(1, Math.min(requestCount, 100));
 
-    if (result.error) {
-      if (result.errorType === "RESTRICTED_ACCESS") {
-        setShowHelpDialog(true);
-      } else {
-        toast.error(result.error);
+    for (let i = 0; i < count; i++) {
+      const result = await sendRequest(method, url, headers, body);
+
+      if (result.error) {
+        if (result.errorType === "RESTRICTED_ACCESS") {
+          setShowHelpDialog(true);
+          break;
+        } else {
+          toast.error(count > 1 ? `Request ${i + 1}/${count} failed: ${result.error}` : result.error);
+        }
+      } else if (i === count - 1 && result.status >= 200 && result.status < 300) {
+        toast.success(count > 1 ? `All ${count} requests completed (${result.status})` : `Request successful (${result.status})`);
       }
-    } else if (result.status >= 200 && result.status < 300) {
-      toast.success(`Request successful (${result.status})`);
     }
-  }, [url, method, headers, body, sendRequest]);
+  }, [url, method, headers, body, sendRequest, requestCount]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -158,6 +165,21 @@ export default function ToolPage() {
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-zinc-600 hidden sm:block pointer-events-none">
                       ↵ Send
                     </span>
+                  </div>
+                  <div className="flex items-center gap-1 bg-zinc-950/50 border border-white/[0.06] rounded-md h-10 px-2 shrink-0">
+                    <Repeat className="h-3.5 w-3.5 text-zinc-500 shrink-0" />
+                    <input
+                      type="number"
+                      min={1}
+                      max={100}
+                      value={requestCount}
+                      onChange={(e) => {
+                        const v = parseInt(e.target.value, 10);
+                        if (!isNaN(v) && v >= 1 && v <= 100) setRequestCount(v);
+                        else if (e.target.value === '') setRequestCount(1);
+                      }}
+                      className="w-8 bg-transparent text-center text-sm text-zinc-300 font-mono outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    />
                   </div>
                   <Button
                     onClick={handleSend}
