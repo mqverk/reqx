@@ -44,21 +44,21 @@ export default function Page() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="card">
+        <Card>
           <h3 className="text-sm font-medium mb-3">Latency Timeline</h3>
           <LatencyChart />
-        </div>
+        </Card>
 
-        <div className="card">
+        <Card>
           <h3 className="text-sm font-medium mb-3">Latency Distribution</h3>
           <LatencyHistogram />
-        </div>
+        </Card>
       </div>
 
-      <div className="card">
+      <Card>
         <h3 className="text-sm font-medium mb-3">Requests</h3>
         <ResultsTable />
-      </div>
+      </Card>
     </div>
   )
 }
