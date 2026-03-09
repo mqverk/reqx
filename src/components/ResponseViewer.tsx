@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Copy, Check, Inbox, Loader2, BarChart3 } from 'lucide-react';
+import { Copy, Check, Inbox, Loader2, BarChart3, Braces, ListFilter, FileText, Key, Hash } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -97,9 +97,18 @@ export function ResponseViewer({ response, loading, metrics = [] }: ResponseView
 
       <Tabs defaultValue="body" className="flex-1 flex flex-col min-h-0">
         <TabsList className="mx-4 mt-3 shrink-0 bg-zinc-800/50">
-          <TabsTrigger value="body">Body</TabsTrigger>
-          <TabsTrigger value="headers">Headers</TabsTrigger>
-          <TabsTrigger value="raw">Raw</TabsTrigger>
+          <TabsTrigger value="body" className="gap-1.5">
+            <Braces className="h-3 w-3" />
+            Body
+          </TabsTrigger>
+          <TabsTrigger value="headers" className="gap-1.5">
+            <ListFilter className="h-3 w-3" />
+            Headers
+          </TabsTrigger>
+          <TabsTrigger value="raw" className="gap-1.5">
+            <FileText className="h-3 w-3" />
+            Raw
+          </TabsTrigger>
           <TabsTrigger value="metrics" className="gap-1.5">
             <BarChart3 className="h-3 w-3" />
             Metrics
@@ -109,13 +118,26 @@ export function ResponseViewer({ response, loading, metrics = [] }: ResponseView
         <TabsContent value="body" className="flex-1 overflow-y-auto overflow-x-hidden p-4 mt-0 min-h-0">
           {response.data ? (
             typeof response.data === 'object' ? (
-              <pre className="font-mono text-xs leading-relaxed whitespace-pre text-zinc-300 bg-zinc-950/50 p-4 rounded-lg border border-white/[0.04] w-full">
-                {JSON.stringify(response.data, null, 2)}
-              </pre>
+              <div className="bg-zinc-950/50 rounded-lg border border-white/[0.04] w-full">
+                <div className="flex items-center gap-2 px-4 py-2 border-b border-white/[0.04]">
+                  <Braces className="h-3.5 w-3.5 text-cyan-400/60" />
+                  <span className="text-[10px] text-zinc-500 uppercase tracking-wider">JSON Response</span>
+                  <span className="text-[10px] text-zinc-600 ml-auto font-mono">{Object.keys(response.data as object).length} keys</span>
+                </div>
+                <pre className="font-mono text-xs leading-relaxed whitespace-pre text-zinc-300 p-4 w-full">
+                  {JSON.stringify(response.data, null, 2)}
+                </pre>
+              </div>
             ) : (
-              <pre className="font-mono text-xs leading-relaxed whitespace-pre-wrap text-zinc-300 bg-zinc-950/50 p-4 rounded-lg border border-white/[0.04] w-full">
-                {String(response.data)}
-              </pre>
+              <div className="bg-zinc-950/50 rounded-lg border border-white/[0.04] w-full">
+                <div className="flex items-center gap-2 px-4 py-2 border-b border-white/[0.04]">
+                  <FileText className="h-3.5 w-3.5 text-cyan-400/60" />
+                  <span className="text-[10px] text-zinc-500 uppercase tracking-wider">Text Response</span>
+                </div>
+                <pre className="font-mono text-xs leading-relaxed whitespace-pre-wrap text-zinc-300 p-4 w-full">
+                  {String(response.data)}
+                </pre>
+              </div>
             )
           ) : (
             <p className="text-zinc-600 text-sm">No response body</p>
@@ -124,13 +146,23 @@ export function ResponseViewer({ response, loading, metrics = [] }: ResponseView
 
         <TabsContent value="headers" className="flex-1 overflow-y-auto overflow-x-hidden p-4 mt-0 min-h-0">
           {Object.keys(response.headers).length > 0 ? (
-            <div className="space-y-1.5">
-              {Object.entries(response.headers).map(([key, value]) => (
-                <div key={key} className="flex gap-3 text-xs font-mono py-1.5 border-b border-white/[0.03] last:border-0">
-                  <span className="text-cyan-400/70 shrink-0 min-w-[160px]">{key}</span>
-                  <span className="text-zinc-400 break-all">{value}</span>
-                </div>
-              ))}
+            <div className="bg-zinc-950/50 rounded-lg border border-white/[0.04]">
+              <div className="flex items-center gap-2 px-4 py-2 border-b border-white/[0.04]">
+                <ListFilter className="h-3.5 w-3.5 text-cyan-400/60" />
+                <span className="text-[10px] text-zinc-500 uppercase tracking-wider">Response Headers</span>
+                <span className="text-[10px] text-zinc-600 ml-auto font-mono">{Object.keys(response.headers).length} headers</span>
+              </div>
+              <div className="divide-y divide-white/[0.03]">
+                {Object.entries(response.headers).map(([key, value]) => (
+                  <div key={key} className="flex gap-3 text-xs font-mono py-2 px-4 hover:bg-white/[0.01] transition-colors">
+                    <div className="flex items-center gap-1.5 shrink-0 min-w-[160px]">
+                      <Key className="h-3 w-3 text-cyan-500/40" />
+                      <span className="text-cyan-400/70">{key}</span>
+                    </div>
+                    <span className="text-zinc-400 break-all">{value}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           ) : (
             <p className="text-zinc-600 text-sm">No headers</p>
@@ -138,11 +170,17 @@ export function ResponseViewer({ response, loading, metrics = [] }: ResponseView
         </TabsContent>
 
         <TabsContent value="raw" className="flex-1 overflow-y-auto overflow-x-hidden p-4 mt-0 min-h-0">
-          <pre className="font-mono text-xs leading-relaxed whitespace-pre text-zinc-400 w-full">
-            {typeof response.data === 'string'
-              ? response.data
-              : JSON.stringify(response.data, null, 2)}
-          </pre>
+          <div className="bg-zinc-950/50 rounded-lg border border-white/[0.04] w-full">
+            <div className="flex items-center gap-2 px-4 py-2 border-b border-white/[0.04]">
+              <Hash className="h-3.5 w-3.5 text-cyan-400/60" />
+              <span className="text-[10px] text-zinc-500 uppercase tracking-wider">Raw Output</span>
+            </div>
+            <pre className="font-mono text-xs leading-relaxed whitespace-pre text-zinc-400 p-4 w-full">
+              {typeof response.data === 'string'
+                ? response.data
+                : JSON.stringify(response.data, null, 2)}
+            </pre>
+          </div>
         </TabsContent>
 
         <TabsContent value="metrics" className="flex-1 overflow-y-auto overflow-x-hidden p-4 mt-0 min-h-0">

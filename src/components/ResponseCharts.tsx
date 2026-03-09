@@ -139,7 +139,7 @@ export function ResponseCharts({ metrics, response }: ResponseChartsProps) {
                 tickLine={false}
                 unit="ms"
               />
-              <Tooltip content={<LatencyTooltip />} />
+              <Tooltip content={<LatencyTooltip />} cursor={{ stroke: 'rgba(255,255,255,0.06)', strokeWidth: 1 }} />
               <Area
                 type="monotone"
                 dataKey="time"
@@ -172,7 +172,7 @@ export function ResponseCharts({ metrics, response }: ResponseChartsProps) {
                 tickLine={false}
                 allowDecimals={false}
               />
-              <Tooltip content={<StatusTooltip />} />
+              <Tooltip content={<StatusTooltip />} cursor={{ fill: 'rgba(255,255,255,0.03)' }} />
               <Bar dataKey="count" radius={[4, 4, 0, 0]} maxBarSize={40}>
                 {statusData.map((entry) => (
                   <Cell key={entry.name} fill={STATUS_COLORS[entry.name] || '#71717a'} fillOpacity={0.8} />
@@ -200,7 +200,7 @@ export function ResponseCharts({ metrics, response }: ResponseChartsProps) {
                 axisLine={false}
                 tickLine={false}
               />
-              <Tooltip content={<SizeTooltip />} />
+              <Tooltip content={<SizeTooltip />} cursor={{ fill: 'rgba(255,255,255,0.03)' }} />
               <Bar dataKey="size" radius={[3, 3, 0, 0]} maxBarSize={24} fill="#3b82f6" fillOpacity={0.7} />
             </BarChart>
           </ResponsiveContainer>
