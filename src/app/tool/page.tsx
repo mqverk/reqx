@@ -33,6 +33,7 @@ export default function ToolPage() {
   const [showHistory, setShowHistory] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [requestCount, setRequestCount] = useState(1);
+  const [requestCountInput, setRequestCountInput] = useState("1");
 
   const {
     sendRequest,
@@ -172,11 +173,13 @@ export default function ToolPage() {
                       type="number"
                       min={1}
                       max={100}
-                      value={requestCount}
-                      onChange={(e) => {
-                        const v = parseInt(e.target.value, 10);
-                        if (!isNaN(v) && v >= 1 && v <= 100) setRequestCount(v);
-                        else if (e.target.value === '') setRequestCount(1);
+                      value={requestCountInput}
+                      onChange={(e) => setRequestCountInput(e.target.value)}
+                      onBlur={() => {
+                        const v = parseInt(requestCountInput, 10);
+                        const clamped = isNaN(v) || v < 1 ? 1 : v > 100 ? 100 : v;
+                        setRequestCount(clamped);
+                        setRequestCountInput(String(clamped));
                       }}
                       className="w-8 bg-transparent text-center text-sm text-zinc-300 font-mono outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                     />
