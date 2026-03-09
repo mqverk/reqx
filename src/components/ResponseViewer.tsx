@@ -1,19 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import { Copy, Check, Inbox, Loader2 } from 'lucide-react';
+import { Copy, Check, Inbox, Loader2, BarChart3 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import type { ApiResponse } from '@/types';
+import { ResponseCharts } from '@/components/ResponseCharts';
+import type { ApiResponse, ResponseMetric } from '@/types';
 
 interface ResponseViewerProps {
   response: ApiResponse | null;
   loading?: boolean;
+  metrics?: ResponseMetric[];
 }
 
-export function ResponseViewer({ response, loading }: ResponseViewerProps) {
+export function ResponseViewer({ response, loading, metrics = [] }: ResponseViewerProps) {
   const [copied, setCopied] = useState(false);
 
   if (!response && !loading) {
@@ -98,6 +100,10 @@ export function ResponseViewer({ response, loading }: ResponseViewerProps) {
           <TabsTrigger value="body">Body</TabsTrigger>
           <TabsTrigger value="headers">Headers</TabsTrigger>
           <TabsTrigger value="raw">Raw</TabsTrigger>
+          <TabsTrigger value="metrics" className="gap-1.5">
+            <BarChart3 className="h-3 w-3" />
+            Metrics
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="body" className="flex-1 overflow-y-auto overflow-x-hidden p-4 mt-0 min-h-0">
@@ -137,6 +143,10 @@ export function ResponseViewer({ response, loading }: ResponseViewerProps) {
               ? response.data
               : JSON.stringify(response.data, null, 2)}
           </pre>
+        </TabsContent>
+
+        <TabsContent value="metrics" className="flex-1 overflow-y-auto overflow-x-hidden p-4 mt-0 min-h-0">
+          <ResponseCharts metrics={metrics} response={response} />
         </TabsContent>
       </Tabs>
     </Card>

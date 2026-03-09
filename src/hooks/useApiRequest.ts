@@ -7,10 +7,13 @@ import type {
   ApiResponse,
   ApiRequest,
   RequestHeader,
+  ResponseMetric,
 } from "@/types";
 
 const HISTORY_KEY = "reqx-history";
+const METRICS_KEY = "reqx-metrics";
 const MAX_HISTORY = 10;
+const MAX_METRICS = 50;
 
 /**
  * Custom hook for managing API requests, responses, and history
@@ -19,8 +22,9 @@ export function useApiRequest() {
   const [response, setResponse] = useState<ApiResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState<ApiRequest[]>([]);
+  const [metrics, setMetrics] = useState<ResponseMetric[]>([]);
 
-  // Load history from localStorage on mount
+  // Load history and metrics from localStorage on mount
   useEffect(() => {
     try {
       const stored = localStorage.getItem(HISTORY_KEY);
@@ -31,6 +35,15 @@ export function useApiRequest() {
     } catch (error) {
       console.error("Failed to load history:", error);
     }
+    try {
+      const stored = localStorage.getItem(METRICS_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setMetrics(parsed);
+      }
+    } catch (error) {
+      console.error("Failed to load metrics:", error);
+    }
   }, []);
 
   // Save history to localStorage whenever it changes
@@ -40,6 +53,16 @@ export function useApiRequest() {
       setHistory(newHistory);
     } catch (error) {
       console.error("Failed to save history:", error);
+    }
+  }, []);
+
+  // Save metrics to localStorage
+  const saveMetrics = useCallback((newMetrics: ResponseMetric[]) => {
+    try {
+      localStorage.setItem(METRICS_KEY, JSON.stringify(newMetrics));
+      setMetrics(newMetrics);
+    } catch (error) {
+      console.error("Failed to save metrics:", error);
     }
   }, []);
 
@@ -59,6 +82,23 @@ export function useApiRequest() {
       try {
         const result = await sendApiRequest(method, url, headers, body);
         setResponse(result);
+
+        // Record metric
+        const responseSize = result.data
+          ? new Blob([typeof result.data === 'string' ? result.data : JSON.stringify(result.data)]).size
+          : 0;
+        const metric: ResponseMetric = {
+          timestamp: Date.now(),
+          status: result.status,
+          time: result.time,
+          size: responseSize,
+          method,
+        };
+        setMetrics((prev) => {
+          const updated = [metric, ...prev].slice(0, MAX_METRICS);
+          saveMetrics(updated);
+          return updated;
+        });
 
         // Add to history if request was valid
         if (url.trim()) {
@@ -83,7 +123,7 @@ export function useApiRequest() {
         setLoading(false);
       }
     },
-    [saveHistory]
+    [saveHistory, saveMetrics]
   );
 
   /**
@@ -91,7 +131,9 @@ export function useApiRequest() {
    */
   const clearHistory = useCallback(() => {
     localStorage.removeItem(HISTORY_KEY);
+    localStorage.removeItem(METRICS_KEY);
     setHistory([]);
+    setMetrics([]);
   }, []);
 
   /**
@@ -113,6 +155,7 @@ export function useApiRequest() {
     response,
     loading,
     history,
+    metrics,
     clearHistory,
     removeFromHistory,
   };

@@ -46,3 +46,11 @@ export interface ApiError {
   type: "network" | "validation" | "http" | "unknown";
   details?: string;
 }
+
+export interface ResponseMetric {
+  timestamp: number;
+  status: number;
+  time: number;
+  size: number;
+  method: HttpMethod;
+}

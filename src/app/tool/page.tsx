@@ -1,12 +1,20 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Send, Zap, ChevronDown, ChevronUp, ArrowLeft } from "lucide-react";
+import {
+  Send,
+  Zap,
+  ChevronDown,
+  ChevronUp,
+  ArrowLeft,
+  Keyboard,
+} from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast, Toaster } from "sonner";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
 import { MethodSelector } from "@/components/MethodSelector";
 import { RequestForm } from "@/components/RequestForm";
 import { ResponseViewer } from "@/components/ResponseViewer";
@@ -29,6 +37,7 @@ export default function ToolPage() {
     response,
     loading,
     history,
+    metrics,
     clearHistory,
     removeFromHistory,
   } = useApiRequest();
@@ -52,15 +61,12 @@ export default function ToolPage() {
     }
   }, [url, method, headers, body, sendRequest]);
 
-  // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ctrl/Cmd + Enter to send request
       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
         e.preventDefault();
         handleSend();
       }
-      // Ctrl/Cmd + K to focus URL bar
       if ((e.ctrlKey || e.metaKey) && e.key === "k") {
         e.preventDefault();
         document.getElementById("url-input")?.focus();
@@ -80,7 +86,7 @@ export default function ToolPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950">
+    <div className="min-h-screen bg-zinc-950">
       <Toaster position="top-right" theme="dark" />
       <ConnectionHelpDialog
         open={showHelpDialog}
@@ -88,28 +94,36 @@ export default function ToolPage() {
       />
 
       {/* Header */}
-      <header className="border-b border-white/5 bg-zinc-950/60 backdrop-blur-xl">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+      <header className="border-b border-white/[0.06] bg-zinc-950/80 backdrop-blur-xl sticky top-0 z-50">
+        <div className="max-w-[1600px] mx-auto px-5 h-14 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 shadow-md shadow-cyan-500/15">
+              <Zap className="h-4 w-4 text-white" />
+            </div>
+            <span className="text-base font-bold tracking-tight">
+              <span className="text-zinc-50">req</span>
+              <span className="text-cyan-400">x</span>
+            </span>
+          </Link>
+          <div className="flex items-center gap-2">
+            <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-zinc-600 mr-2">
+              <Keyboard className="h-3 w-3" />
+              <kbd className="px-1.5 py-0.5 rounded bg-zinc-900 border border-white/[0.06] text-zinc-500 font-mono">
+                Ctrl+Enter
+              </kbd>
+              <span>send</span>
+              <kbd className="px-1.5 py-0.5 rounded bg-zinc-900 border border-white/[0.06] text-zinc-500 font-mono ml-1">
+                Ctrl+K
+              </kbd>
+              <span>focus</span>
+            </div>
             <Link href="/">
-              <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/20">
-                  <Zap className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold tracking-tight">
-                    <span className="text-zinc-50">req</span>
-                    <span className="text-cyan-400">x</span>
-                  </h1>
-                  <p className="text-xs text-zinc-500">
-                    API Testing Tool
-                  </p>
-                </div>
-              </div>
-            </Link>
-            <Link href="/">
-              <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-zinc-50">
-                <ArrowLeft className="h-4 w-4 mr-2" />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-zinc-500 hover:text-zinc-300 h-8 text-xs"
+              >
+                <ArrowLeft className="h-3.5 w-3.5 mr-1.5" />
                 Home
               </Button>
             </Link>
@@ -117,88 +131,97 @@ export default function ToolPage() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-6">
+      <div className="max-w-[1600px] mx-auto px-5 py-5">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-5">
           {/* Main Content */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* URL Bar */}
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex gap-2"
             >
-              <MethodSelector value={method} onChange={setMethod} />
-              <Input
-                id="url-input"
-                type="url"
-                placeholder="https://api.example.com/endpoint"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                className="flex-1 font-mono"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleSend();
-                }}
-              />
-              <Button
-                onClick={handleSend}
-                disabled={loading || !url.trim()}
-                className="min-w-[100px] bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white border-0 shadow-lg shadow-cyan-500/20"
-              >
-                {loading ? (
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{
-                      duration: 1,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
+              <Card className="p-2 bg-zinc-900/60 border-white/[0.06] shadow-xl shadow-black/20">
+                <div className="flex gap-2 items-center">
+                  <MethodSelector value={method} onChange={setMethod} />
+                  <div className="flex-1 relative">
+                    <Input
+                      id="url-input"
+                      type="url"
+                      placeholder="Enter request URL..."
+                      value={url}
+                      onChange={(e) => setUrl(e.target.value)}
+                      className="font-mono text-sm bg-zinc-950/50 border-white/[0.06] h-10 pr-16 focus-visible:border-cyan-500/50 focus-visible:ring-cyan-500/20"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") handleSend();
+                      }}
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-zinc-600 hidden sm:block pointer-events-none">
+                      ↵ Send
+                    </span>
+                  </div>
+                  <Button
+                    onClick={handleSend}
+                    disabled={loading || !url.trim()}
+                    className="h-10 px-5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white border-0 shadow-lg shadow-cyan-500/15 disabled:opacity-40 disabled:shadow-none transition-all"
                   >
-                    <Send className="h-4 w-4" />
-                  </motion.div>
-                ) : (
-                  <>
-                    <Send className="h-4 w-4 mr-2" />
-                    Send
-                  </>
-                )}
-              </Button>
+                    {loading ? (
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{
+                          duration: 1,
+                          repeat: Infinity,
+                          ease: "linear",
+                        }}
+                      >
+                        <Send className="h-4 w-4" />
+                      </motion.div>
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4 mr-2" />
+                        Send
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </Card>
             </motion.div>
 
-            {/* Request Panel */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="h-[400px]"
-            >
-              <RequestForm
-                method={method}
-                headers={headers}
-                body={body}
-                onHeadersChange={setHeaders}
-                onBodyChange={setBody}
-              />
-            </motion.div>
+            {/* Request / Response Split */}
+            <div className="grid grid-cols-1 xl:grid-rows-[auto_1fr] gap-4">
+              {/* Request Panel */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 }}
+              >
+                <RequestForm
+                  method={method}
+                  headers={headers}
+                  body={body}
+                  onHeadersChange={setHeaders}
+                  onBodyChange={setBody}
+                />
+              </motion.div>
 
-            {/* Response Panel */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="h-[500px]"
-            >
-              <ResponseViewer response={response} />
-            </motion.div>
+              {/* Response Panel */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                <ResponseViewer response={response} loading={loading} metrics={metrics} />
+              </motion.div>
+            </div>
           </div>
 
           {/* Sidebar - History */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.15 }}
             className="lg:block hidden"
           >
-            <div className="sticky top-6 h-[calc(100vh-120px)]">
+            <div className="sticky top-[72px] h-[calc(100vh-92px)]">
               <RequestHistory
                 history={history}
                 onSelect={loadFromHistory}
@@ -210,11 +233,11 @@ export default function ToolPage() {
         </div>
 
         {/* Mobile History Toggle */}
-        <div className="lg:hidden mt-6">
+        <div className="lg:hidden mt-5">
           <Button
             variant="outline"
             onClick={() => setShowHistory(!showHistory)}
-            className="w-full"
+            className="w-full border-white/[0.06] bg-zinc-900/40 hover:bg-zinc-800/40"
           >
             {showHistory ? (
               <>
@@ -249,20 +272,6 @@ export default function ToolPage() {
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Keyboard Shortcuts Hint */}
-      <div className="fixed bottom-4 right-4 text-xs text-zinc-500 bg-zinc-900/80 backdrop-blur-sm px-3 py-2 rounded-lg border border-white/5 hidden md:block">
-        <div className="space-y-1">
-          <div>
-            <kbd className="px-1.5 py-0.5 bg-zinc-800 rounded">Ctrl+Enter</kbd>{" "}
-            Send
-          </div>
-          <div>
-            <kbd className="px-1.5 py-0.5 bg-zinc-800 rounded">Ctrl+K</kbd>{" "}
-            Focus URL
-          </div>
         </div>
       </div>
     </div>
