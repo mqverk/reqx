@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
+import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 import { useBenchmarkStore } from '../stores/benchmarkStore'
 
 function makeBins(values: number[], binCount = 10) {
@@ -14,7 +14,11 @@ function makeBins(values: number[], binCount = 10) {
     const idx = Math.min(binCount - 1, Math.floor((v - min) / binSize))
     bins[idx]++
   }
-  return bins.map((count, i) => ({ bin: Math.round(min + i * binSize), count }))
+  return bins.map((count, i) => {
+    const binStart = min + i * binSize
+    const mid = binStart + binSize / 2
+    return { bin: Math.round(binStart), count, mid }
+  })
 }
 
 export default function LatencyHistogram() {
@@ -24,23 +28,34 @@ export default function LatencyHistogram() {
     return makeBins(vals, 12)
   }, [results])
 
+  const maxMid = React.useMemo(() => {
+    if (!data.length) return 0
+    return Math.max(...data.map((d) => d.mid || 0))
+  }, [data])
+
+  const colorFor = (v: number) => {
+    if (!maxMid) return '#60A5FA'
+    const p = v / maxMid
+    if (p < 0.4) return '#60A5FA' // blue
+    if (p < 0.75) return '#F472B6' // pink
+    return '#FB7185' // rose
+  }
+
   if (!results.length) return <div className="text-sm text-slate-400 py-6">No data yet</div>
 
   return (
     <div style={{ width: '100%', height: 280 }}>
       <ResponsiveContainer>
         <BarChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-          <defs>
-            <linearGradient id="histGradient" x1="0" x2="1">
-              <stop offset="0%" stopColor="#6366F1" stopOpacity={1} />
-              <stop offset="100%" stopColor="#F472B6" stopOpacity={1} />
-            </linearGradient>
-          </defs>
           <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.06} />
           <XAxis dataKey="bin" tick={{ fill: '#94a3b8' }} />
           <YAxis tick={{ fill: '#94a3b8' }} />
-          <Tooltip formatter={(value: any) => `${value} req`} />
-          <Bar dataKey="count" fill="url(#histGradient)" radius={[6, 6, 6, 6]} isAnimationActive animationDuration={700} />
+          <Tooltip />
+          <Bar dataKey="count" isAnimationActive animationDuration={700}>
+            {data.map((entry, i) => (
+              <Cell key={`cell-${i}`} fill={colorFor(entry.mid || 0)} />
+            ))}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>
