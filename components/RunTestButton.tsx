@@ -8,6 +8,8 @@ import Spinner from './Spinner'
 export default function RunTestButton() {
   const startBenchmark = useBenchmarkStore((s) => s.startBenchmark)
   const running = useBenchmarkStore((s) => s.running)
+  const results = useBenchmarkStore((s) => s.results)
+  const config = useBenchmarkStore((s) => s.config)
 
   const MotionButton: any = motion.button
 
@@ -26,6 +28,19 @@ export default function RunTestButton() {
         </span>
       </MotionButton>
       {running && <div className="text-xs text-slate-400">Streaming results…</div>}
+      {results.length > 0 && (
+        <motion.div
+          key={results.length}
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.18 }}
+          className="inline-flex items-center gap-2 px-3 py-1 rounded bg-white/3 text-xs font-mono"
+        >
+          <span className="font-medium">{results.length}/{config.count}</span>
+          <span className="text-slate-400">•</span>
+          <span className="text-slate-300">{Math.round((results.filter((r) => r.ok).length / results.length) * 100)}%</span>
+        </motion.div>
+      )}
     </div>
   )
 }
