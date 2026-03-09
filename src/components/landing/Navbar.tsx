@@ -30,9 +30,10 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
             <motion.div
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center justify-center w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/25"
+              whileHover={{ y: -2, rotate: 5 }}
+              whileTap={{ y: 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+              className="flex items-center justify-center w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-shadow"
             >
               <Zap className="h-5 w-5 text-white" />
             </motion.div>
@@ -72,15 +73,15 @@ export function Navbar() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <motion.div whileHover={{ y: -2 }} whileTap={{ y: 0 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
               <Button variant="ghost" size="sm" asChild>
                 <a href="https://github.com/mqverk/reqx" target="_blank" rel="noopener noreferrer">
                   <Github className="h-4 w-4" />
                 </a>
               </Button>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button asChild className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white border-0 shadow-lg shadow-cyan-500/20">
+            <motion.div whileHover={{ y: -2 }} whileTap={{ y: 0 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
+              <Button asChild className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white border-0 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:shadow-xl transition-shadow">
                 <Link href="/tool">Get Started</Link>
               </Button>
             </motion.div>

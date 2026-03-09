@@ -12,8 +12,9 @@ const Footer = () => {
             <div className="md:col-span-2">
               <Link href="/" className="flex items-center gap-2.5 group mb-4">
                 <motion.div
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/20"
+                  whileHover={{ y: -2, rotate: 5 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                  className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-shadow"
                 >
                   <Zap className="h-5 w-5 text-white" />
                 </motion.div>
@@ -31,8 +32,9 @@ const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center w-9 h-9 rounded-lg bg-zinc-800/50 hover:bg-zinc-700/50 text-zinc-400 hover:text-zinc-50 transition-colors"
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ y: -3 }}
+                  whileTap={{ y: 0 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                 >
                   <Github className="h-4 w-4" />
                 </motion.a>

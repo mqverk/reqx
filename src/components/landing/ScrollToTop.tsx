@@ -38,8 +38,9 @@ export function ScrollToTop() {
           className="fixed bottom-8 right-8 z-50"
         >
           <motion.div
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={{ y: -3 }}
+            whileTap={{ y: 0 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
           >
             <Button
               onClick={scrollToTop}

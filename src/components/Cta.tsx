@@ -22,8 +22,8 @@ const Cta = () => {
                 No installation required. Just open and start testing.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button size="lg" asChild className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white border-0 shadow-lg shadow-cyan-500/20">
+                <motion.div whileHover={{ y: -3 }} whileTap={{ y: 0 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
+                  <Button size="lg" asChild className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white border-0 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:shadow-2xl transition-shadow">
                     <Link href="/tool">
                       <Rocket className="h-5 w-5 mr-2" />
                       Launch Tool
@@ -37,8 +37,8 @@ const Cta = () => {
                     </Link>
                   </Button>
                 </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button size="lg" variant="outline" asChild>
+                <motion.div whileHover={{ y: -3 }} whileTap={{ y: 0 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
+                  <Button size="lg" variant="outline" asChild className="hover:shadow-lg hover:shadow-white/5 transition-shadow">
                     <a href="https://github.com" target="_blank" rel="noopener noreferrer">
                       <Github className="h-5 w-5 mr-2" />
                       Star on GitHub

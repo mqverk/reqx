@@ -36,16 +36,16 @@ const Hero = () => {
               The lightweight API testing tool that gets out of your way. No accounts, no installs — just open and send.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button size="lg" asChild className="text-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white border-0 shadow-xl shadow-cyan-500/20 px-8">
+              <motion.div whileHover={{ y: -3 }} whileTap={{ y: 0 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
+                <Button size="lg" asChild className="text-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white border-0 shadow-xl shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:shadow-2xl px-8 transition-shadow">
                   <Link href="/tool">
                     <Rocket className="h-5 w-5 mr-2" />
                     Launch reqx
                   </Link>
                 </Button>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button size="lg" variant="outline" asChild className="border-zinc-700 hover:border-zinc-500 px-8">
+              <motion.div whileHover={{ y: -3 }} whileTap={{ y: 0 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
+                <Button size="lg" variant="outline" asChild className="border-zinc-700 hover:border-zinc-500 hover:shadow-lg hover:shadow-white/5 px-8 transition-shadow">
                   <a href="#features">
                     <Send className="h-5 w-5 mr-2" />
                     View Features
